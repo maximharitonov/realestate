@@ -3,12 +3,13 @@
 namespace App\Models\Asset;
 
 use App\Models\User\User;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Asset extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, AssetTrait;
 
     protected $fillable = [
         'owner_id',
@@ -21,6 +22,12 @@ class Asset extends Model
         'created_at',
         'updated_at',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new UserScope);
+    }
 
     public function user()
     {

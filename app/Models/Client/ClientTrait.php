@@ -11,5 +11,10 @@ namespace App\Models\Client;
 
 trait ClientTrait
 {
+    public function getNameAttribute()
+    {
+        return ucwords($this->first_name . ' ' . $this->last_name);
+    }
+
 
 }

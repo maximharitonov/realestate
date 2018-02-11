@@ -2,6 +2,7 @@
 
 namespace App\Models\Asset;
 
+use App\Scopes\AssetScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -26,11 +27,11 @@ class AssetInfo extends Model
         'animals_allowed',
     ];
 
-    protected $hidden = [
-        'deleted_at',
-        'created_at',
-        'updated_at',
-    ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new AssetScope);
+    }
 
     public function asset()
     {

@@ -3,6 +3,7 @@
 namespace App\Models\Client;
 
 use App\Models\User\User;
+use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,17 +19,12 @@ class Client extends Model
         'email',
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'deleted_at',
-        'created_at',
-        'updated_at',
-    ];
-
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new UserScope);
+    }
+    
     public function user()
     {
         return $this->belongsTo(User::class, 'referrer_id');

@@ -17,18 +17,25 @@ use App\Models\User\User;
 
 class PassportController extends Controller
 {
-    public $successStatus = 200;
-
+    private $policies = [
+        'first_name'   =>  'required',
+        'last_name'    =>  'required',
+        'phone'        =>  'required|numeric|unique:users',
+        'email'        =>  'required|email|unique:users',
+        'password'          =>  'required',
+        'c_password'        =>  'required|same:password',
+    ];
     /**
      * login api
      *
      * @return Response
      */
+
     public function login(){
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
             $user = Auth::user();
-            $success['token'] =  $user->createToken('MyApp')->accessToken;
-            return response()->json(['success' => $success], $this->successStatus);
+            $success['token'] =  $user->createToken('realestate')->accessToken;
+            return response()->json(['success' => $success], 200);
         }
         else{
             return response()->json(['error'=>'Unauthorised'], 401);
@@ -43,14 +50,7 @@ class PassportController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'first_name'    => 'required',
-            'last_name'     => 'required',
-            'phone'         => 'required|numeric',
-            'email'         => 'required|email',
-            'password'      => 'required',
-            'c_password'    => 'required|same:password',
-        ]);
+        $validator = Validator::make($request->all(), $this->policies);
 
         if ($validator->fails()) {
             return response()->json(['error'=>$validator->errors()], 401);
@@ -59,11 +59,11 @@ class PassportController extends Controller
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] =  $user->createToken('MyApp')->accessToken;
+        $success['token'] =  $user->createToken('realestate')->accessToken;
         $success['email'] =  $user->email;
         $success['phone'] =  $user->phone;
 
-        return response()->json(['success'=>$success], $this->successStatus);
+        return response()->json(['success'=>$success], 200);
     }
 
 
@@ -75,6 +75,6 @@ class PassportController extends Controller
     public function getDetails()
     {
         $user = Auth::user();
-        return response()->json(['success' => $user], $this->successStatus);
+        return response()->json(['success' => $user], 200);
     }
 }
