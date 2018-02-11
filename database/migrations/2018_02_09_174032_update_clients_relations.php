@@ -35,7 +35,7 @@ class UpdateClientsRelations extends Migration
         });
 
         Schema::table('client_specs', function (Blueprint $table) {
-            $table->dropForeign('clients_specs_client_id_foreign');
+            $table->dropForeign('client_specs_client_id_foreign');
         });
     }
 }

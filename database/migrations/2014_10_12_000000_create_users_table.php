@@ -21,8 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('phone')->unique();
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('company_id')->unsigned();
-            $table->string('token');
+            $table->integer('company_id')->unsigned()->nullable();
+            $table->string('remember_token')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

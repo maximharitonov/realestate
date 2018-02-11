@@ -2,16 +2,16 @@
 
 namespace App\Models\User;
 
+use Laravel\Passport\HasApiTokens;
 use App\Models\Asset\Asset;
 use App\Models\Client\Client;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable
 {
-    use Notifiable, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -34,10 +34,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
-        'deleted_at',
-        'created_at',
-        'updated_at',
+        'remember_token'
     ];
 
     public function company()
