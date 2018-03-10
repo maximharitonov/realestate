@@ -16,6 +16,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Event' => [
             'App\Listeners\EventListener',
         ],
+        'App\Events\SpecsAdded' => [
+            'App\Listeners\LookForAssetsMatch',
+        ],
+        'App\Events\AssetAdded' => [
+            'App\Listeners\LookForSpecsMatch'
+        ]
     ];
 
     /**
