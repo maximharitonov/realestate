@@ -13,6 +13,7 @@ abstract class AuthorizedController extends BaseController
 
     protected $user;
     protected $model;
+    protected $properties;
 
     public function __construct(string $model)
     {
@@ -22,7 +23,7 @@ abstract class AuthorizedController extends BaseController
 
     protected function index(Request $request)
     {
-        return $this->model::all();
+        return $this->model::orderBy('created_at')->chunk(100);
     }
 
     protected function get(Request $request)
@@ -36,7 +37,7 @@ abstract class AuthorizedController extends BaseController
 
         if ($item) {
             foreach ($request->get('data') as $column => $value) {
-                $item->{$column}    =   $value;
+                $item->{$column} = $value;
             }
 
             $item->update();
@@ -52,9 +53,9 @@ abstract class AuthorizedController extends BaseController
         return $item ? $item->delete() : false;
     }
 
-    protected function create(Request $request)
+    protected function create(Request $request, array $properties)
     {
-        return $this->model::create($this->properties($request));
+        return $this->model::create(self::merge($request, $properties));
     }
 
     protected function validate(Request $request, array $policies)
@@ -64,8 +65,7 @@ abstract class AuthorizedController extends BaseController
 
     private function properties(Request $request)
     {
-        return array_merge(
-            [ 'referrer_id' =>  Auth::id() ],
+        return array_merge($this->properties,
             array_reduce($request->only('data'), function ($carry, $item) {
                 return $item;
             })

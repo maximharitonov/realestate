@@ -2,6 +2,9 @@
 
 namespace App\Models\Asset;
 
+use App\Model\AssetPurposes;
+use App\Models\Client\Client;
+use App\Models\Match\Match;
 use App\Models\User\User;
 use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
@@ -42,6 +45,11 @@ class Asset extends Model
     public function info()
     {
         return $this->hasOne(AssetInfo::class);
+    }
+
+    public function matches()
+    {
+        return $this->hasMany(Match::class);
     }
 
     public function images()

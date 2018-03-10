@@ -12,6 +12,7 @@ namespace App\Http\Controllers\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User\User;
 
@@ -22,8 +23,8 @@ class PassportController extends Controller
         'last_name'    =>  'required',
         'phone'        =>  'required|numeric|unique:users',
         'email'        =>  'required|email|unique:users',
-        'password'          =>  'required',
-        'c_password'        =>  'required|same:password',
+        'password'     =>  'required',
+        'c_password'   =>  'required|same:password',
     ];
     /**
      * login api

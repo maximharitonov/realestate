@@ -10,14 +10,14 @@ namespace App\Transformers;
 
 abstract class Transformer
 {
-    abstract public function transform($item);
+    abstract static public function transform($item);
 
-    abstract public function extract($item);
+    abstract static public function extract($item);
 
-    public function transformCollection($items)
+    public static function transformCollection($items)
     {
         return $items->each(function($item) {
-            return $this->transform($item);
+            return self::transform($item);
         });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\User;
 
+use App\Models\Match\Match;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Asset\Asset;
 use App\Models\Client\Client;
@@ -50,5 +51,15 @@ class User extends Authenticatable
     public function assets()
     {
         return $this->hasMany(Asset::class, 'referrer_id');
+    }
+
+    public function asset_matches()
+    {
+        return $this->hasMany(Match::class, 'asset_affiliate_id');
+    }
+
+    public function client_matches()
+    {
+        return $this->hasMany(Match::class, 'client_affiliate_id');
     }
 }

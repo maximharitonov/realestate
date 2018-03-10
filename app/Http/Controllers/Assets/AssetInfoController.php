@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers\Assets;
 
-use App\Http\Controllers\API\AuthorizedController;
-use App\Models\Asset\Asset;
-use App\Transformers\AssetTransformer;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response as CODE;
-use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\Controller;
+use App\Repositories\AssetInfoRepository;
 
-class AssetInfoController extends AuthorizedController
+class AssetInfoController extends Controller
 {
-    private $policies = [
+    protected $rules = [
         'data.city'             =>  'required',
         'data.street'           =>  'required',
         'data.street_num'       =>  'required|numeric|min:0',
@@ -26,71 +22,7 @@ class AssetInfoController extends AuthorizedController
         'data.renovated'        =>  'required|boolean',
     ];
 
-    public function __construct()
-    {
-        parent::__construct(Asset::class);
-    }
-
-    public function create(Request $request)
-    {
-        $validator  = parent::validate($request, $this->policies);
-
-        if ($validator && $validator->fails())
-            return Response::json([
-                'success'   =>  false,
-                'HTTP_CODE' =>  CODE::HTTP_UNPROCESSABLE_ENTITY,
-                'errors'    =>  $validator
-            ]);
-
-        $asset     = parent::create($request);
-
-        if ( ! $asset)
-            return Response::json([
-                'success'   =>  false,
-                'HTTP_CODE' =>  CODE::HTTP_FORBIDDEN
-            ]);
-
-        return Response::json([
-            'success'       =>  true,
-            'HTTP_CODE'     =>  CODE::HTTP_CREATED,
-            'data'          =>  $this->transformer->transform($asset)
-        ]);
-    }
-
-    public function update(Request $request)
-    {
-        $validator  = parent::validate($request, ['data.asset_type' => 'required|numeric']);
-        if ($validator && $validator->fails())
-            return Response::json([
-                'success'   =>  false,
-                'HTTP_CODE' =>  CODE::HTTP_UNPROCESSABLE_ENTITY,
-                'errors'    =>  $validator
-            ]);
-
-        $asset             = parent::update($request);
-
-        if ( ! $asset)return Response::json([
-            'success'       =>  false,
-            'HTTP_CODE'     =>  CODE::HTTP_FORBIDDEN
-        ]);
-
-        return Response::json([
-            'success'       =>  true,
-            'HTTP_CODE'     =>  CODE::HTTP_OK,
-            'data'          =>  $this->transformer->transform($asset)
-        ]);
-    }
-
-
-    public function delete(Request $request)
-    {
-        return parent::delete($request) ?
-            Response::json([
-            'success'       =>  true,
-            'HTTP_CODE'     =>  CODE::HTTP_OK
-            ]) : Response::json([
-                'success'   =>  false,
-                'HTTP_CODE' =>  CODE::HTTP_INTERNAL_SERVER_ERROR]);
-
+    public function __construct(){
+        $this->repository = AssetInfoRepository::class;
     }
 }

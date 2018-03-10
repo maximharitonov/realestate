@@ -11,17 +11,8 @@ namespace App\Models\User;
 
 trait UserTrait
 {
-    public function getClientsIdsAttribute()
+    public function getMatchesAttribute()
     {
-        return $this->clients->map(function($client) {
-           return $client->id;
-        });
-    }
 
-    public function getAssetsIdsAttribute()
-    {
-        return $this->assets->map(function($asset) {
-           return $asset->id;
-        });
     }
 }

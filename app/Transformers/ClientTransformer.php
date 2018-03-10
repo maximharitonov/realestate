@@ -12,7 +12,7 @@ namespace App\Transformers;
 class ClientTransformer extends Transformer
 {
 
-    public function transform($client)
+    public static function transform($client)
     {
         return [
             'id'            =>  (int)    $client->id,
@@ -24,11 +24,11 @@ class ClientTransformer extends Transformer
         ];
     }
 
-    public function extract($client)
+    public static function extract($client)
     {
         return array_merge(
-            $this->transform($client), [
-                'specs'     =>  $client->specs->each(function ($spec) {
+            self::transform($client), [
+                'specs' => $client->specs->each(function ($spec) {
                     return [
                         'id'                =>  (int)     $spec->id,
                         'asset_type'        =>  (int)     $spec->asset_type,
@@ -41,11 +41,11 @@ class ClientTransformer extends Transformer
                         'price'             =>  (int)     $spec->price,
                         'floor'             =>  (int)     $spec->floor,
                         'rooms'             =>  (double)  $spec->rooms,
-                        'elevator'          =>  (boolean) $spec->elevator,
-                        'garden'            =>  (boolean) $spec->garden,
-                        'parking'           =>  (boolean) $spec->parking,
-                        'renovated'         =>  (boolean) $spec->renovated,
-                        'animals_allowed'   =>  (boolean) $spec->animals_allowed,
+                        'elevator'          =>  (bool)    $spec->elevator,
+                        'garden'            =>  (bool)    $spec->garden,
+                        'parking'           =>  (bool)    $spec->parking,
+                        'renovated'         =>  (bool)    $spec->renovated,
+                        'animals_allowed'   =>  (bool)    $spec->animals_allowed,
                         'created_at'        =>  (string)  $spec->created_at,
                         'updated_at'        =>  (string)  $spec->updated_at,
                     ];

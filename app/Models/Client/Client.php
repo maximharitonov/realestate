@@ -2,6 +2,8 @@
 
 namespace App\Models\Client;
 
+use App\Models\Asset\Asset;
+use App\Models\Match\Match;
 use App\Models\User\User;
 use App\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Model;
@@ -39,4 +41,5 @@ class Client extends Model
     {
         return $this->hasMany(Asset::class, 'owner_id');
     }
+
 }

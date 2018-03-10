@@ -12,20 +12,21 @@ namespace App\Transformers;
 class AssetTransformer extends Transformer
 {
 
-    public function transform($asset)
+
+    public static function transform($asset)
     {
         return [
-            'id'            =>  (int) $asset->id,
-            'asset_type'    =>  (int) $asset->asset_type,
+            'id'            =>  (int)    $asset->id,
+            'asset_type'    =>  (int)    $asset->asset_type,
             'created_at'    =>  (string) $asset->first_name,
             'updated_at'    =>  (string) $asset->last_name,
         ];
     }
 
-    public function extract($asset)
+    public static function extract($asset)
     {
         return array_merge(
-            $this->transform($asset), [
+            self::transform($asset), [
                 'info'     =>  $asset->info->map(function ($info) {
                     return [
                         'id'                =>  (int)     $info->id,
@@ -37,11 +38,11 @@ class AssetTransformer extends Transformer
                         'price'             =>  (int)     $info->price,
                         'floor'             =>  (int)     $info->floor,
                         'rooms'             =>  (double)  $info->rooms,
-                        'elevator'          =>  (boolean) $info->elevator,
-                        'garden'            =>  (boolean) $info->garden,
-                        'parking'           =>  (boolean) $info->parking,
-                        'renovated'         =>  (boolean) $info->renovated,
-                        'animals_allowed'   =>  (boolean) $info->animals_allowed,
+                        'elevator'          =>  (bool)    $info->elevator,
+                        'garden'            =>  (bool)    $info->garden,
+                        'parking'           =>  (bool)    $info->parking,
+                        'renovated'         =>  (bool)    $info->renovated,
+                        'animals_allowed'   =>  (bool)    $info->animals_allowed,
                         'created_at'        =>  (string)  $info->created_at,
                         'updated_at'        =>  (string)  $info->updated_at,
                     ];

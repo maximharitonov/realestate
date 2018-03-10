@@ -22,15 +22,19 @@ Route::group(['namespace' => 'Auth'], function () {
 
 Route::group(['middleware' => 'auth:api'], function(){
     Route::post('get-details', 'Auth\PassportController@getDetails');
-    Route::group(['namespace' => 'User'], function () {
+    /*Route::group(['namespace' => 'User'], function () {
         Route::post('index', 'UserController@index');
         Route::post('get', 'UserController@get');
         Route::post('update', 'UserController@update');
         Route::post('delete', 'UserController@delete');
-        Route::post('create', 'UserController@update');
-    });
+        Route::post('UserController@update', 'create');
+    });*/
 
-    Route::group(['prefix' => 'clients', 'namespace' => 'Clients'], function () {
+    Route::group([
+        'prefix' => 'clients',
+        'namespace' => 'Clients',
+        'middleware' => 'transform'
+    ], function () {
        Route::post('', 'ClientsController@index');
        Route::post('get', 'ClientsController@get');
        Route::post('update', 'ClientsController@update');
@@ -43,7 +47,11 @@ Route::group(['middleware' => 'auth:api'], function(){
        });
     });
 
-    Route::group(['namespace' => 'Assets'], function () {
+    Route::group([
+        'prefix' => 'assets',
+        'namespace' => 'Assets',
+        'middleware' => 'transform'
+    ], function () {
         Route::post('index', 'AssetsController@index');
         Route::post('get', 'AssetsController@get');
         Route::post('update', 'AssetsController@update');

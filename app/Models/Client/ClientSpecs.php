@@ -2,6 +2,7 @@
 
 namespace App\Models\Client;
 
+use App\Models\Match\Match;
 use App\Scopes\ClientScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -38,5 +39,10 @@ class ClientSpecs extends Model
     public function client()
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function matches()
+    {
+        return $this->hasMany(Match::class,'specs_id');
     }
 }
